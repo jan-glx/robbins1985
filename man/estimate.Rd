@@ -15,7 +15,7 @@ data.frame with one row for each element of \code{x_ij} and columns correspondin
 \description{
 Implements the general case of the non-parametric linear empirical Bayes
 estimator of many means and many variances as described in the same named
-publication by Herbert Robbins (1985) <doi:10.1073/pnas.82.6.157>.
+publication by Herbert Robbins (1985) <doi:10.1073/pnas.82.6.1571>.
 }
 \examples{
 estimate(x_ij = split(iris$Sepal.Length, f = iris$Species))
