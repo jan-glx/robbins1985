@@ -1,0 +1,69 @@
+---
+title: "intro"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{intro}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(data.table)
+library(ggplot2)
+```
+
+```{r}
+N <- 1000
+
+sim_dt <- data.table(theta_mean = 5, theta_sd = 1, sd_mean=2, sd_sd=0.5)[, cbind(.SD, data.table(
+  idx = seq_len(N),
+  theta_var = theta_sd^2,
+  sd_var = sd_sd^2,
+  theta_i = rnorm(N , mean = theta_mean, sd = theta_sd),
+  sigma2_i = abs(rnorm(N , mean = sd_mean, sd = sd_sd))
+))]
+
+sim_dt[, x_ij := list(list(
+  rnorm(
+    n = rpois(n = 1, lambda = 10)+4, 
+    mean = theta_i, 
+    sd = sqrt(sigma2_i)
+  )
+)), by = .(idx, theta_i, sigma2_i)]
+
+sim_dt <- sim_dt[, c(.SD, robbins1985::estimate(x_ij))]
+
+ggplot(sim_dt, aes(x=theta_i, xend=theta_i, y = x_i, yend = t_i, group = idx)) +
+  geom_abline() +
+  geom_point(aes(color = "$x_i$")) +
+  geom_point(aes(y = t_i, color = "$t_i'$"))  +
+  geom_segment(arrow = grid::arrow(angle= 20, length=unit(3, "points"), type="closed")) +
+  labs(y=latex2exp::TeX("$\\hat{θ_i^2}$"), x=latex2exp::TeX("$θ_i^2$")) +
+  scale_color_discrete("estimator", labels=(latex2exp::TeX(c("$x_i$", "$t_i'$"))))
+
+ggplot(sim_dt, aes(x=sigma2_i, xend=sigma2_i, y = s2_i, yend = w_i, group = idx)) +
+  geom_abline() +
+  geom_point(aes(color = "$s_i^2$")) +
+  geom_point(aes(y = w_i, color = "$w_i'$")) +
+  geom_segment(arrow = grid::arrow(angle= 20,length=unit(3, "points"), type="closed")) +
+  labs(y=latex2exp::TeX("$\\hat{σ_i^2}$"), x=latex2exp::TeX("$σ_i^2$")) +
+  scale_color_discrete("estimator", labels=(latex2exp::TeX(c("$w_i'$", "$s_i^2$"))))
+
+sim_dt
+
+RMSE <- function(x, y) sqrt(mean((x-y)^2))
+
+sim_dt[, .(
+  estimator = c("x_i", "t_i'", "s^2_i", "w_i'"),
+  true_value = c("θ_i", "θ_i", "σ_i^2", "σ_i^2"),
+  RMSE = mapply(RMSE, list(x_i, t_i, s2_i, w_i), list(theta_i, theta_i, sigma2_i, sigma2_i))
+)]
+```
+
