@@ -13,7 +13,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-# robbins1985
+# robbins1985 – Linear empirical Bayes estimation of means and variances
 
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/jan-glx/robbins1985/workflows/R-CMD-check/badge.svg)](https://github.com/jan-glx/robbins1985/actions)
