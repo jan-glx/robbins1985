@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# robbins1985
+# robbins1985 – Linear empirical Bayes estimation of means and variances
 
 <!-- badges: start -->
 
