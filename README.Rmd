@@ -49,5 +49,5 @@ ggplot(res_df, aes(x=Species)) +
   geom_point(aes(y=w_i, color = "EB estimator (w_i')")) +
   labs(y = "estimate of VAR[Sepal.Length|Species]", color = "estimator")
 ```
-Note, how the empirical Bayes estimator shrinks the estimates towards the average of the unbiased population means. The effect is more pronounced for the variance estimate, where this *might* be useful to improve tests for the difference in means by providing an intermediate between pooled and independent variance estimates ...
+Note how the empirical Bayes estimator shrinks the estimates towards the average of the unbiased population means. The effect is more pronounced for the variance estimate, where this *might* be useful to improve tests for the difference in means by providing an intermediate between pooled and independent variance estimates ...
 
