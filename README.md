@@ -14,7 +14,7 @@ experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](h
 estimator of means variances proposed by [Robbins
 (1985)](https://doi.org/10.1073/pnas.82.6.1571). `robbins1985` provides
 a single function: `estimate` that calculates the proposed estimators as
-well as the statics used for their calculation.
+well as the statistics used for their calculation.
 
 ## Installation
 
